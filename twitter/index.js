@@ -25,29 +25,6 @@ const readFile = (fileName, dir) => {
 
 app.get('/tweets', (req, res) => {
 
-    // fs.readdir('./data', (err, files) => {
-
-    //     if (err) console.log('error occured')
-
-    //     const arr = []
-    //     for (let i = 0; i < files.length; i++) {
-    //         console.log(files[i])
-    //         const dir = './data/' + files[i]
-    //         console.log(dir)
-    //         fs.readFile(dir, 'utf8', function (err, data) {
-    //             if (err) return
-    //             console.log(data)
-    //             arr.push(JSON.parse(data))
-    //             if (i === files.length - 1) {
-    //                 res.status(200).json({
-    //                     error: false,
-    //                     tweets: arr
-    //                 })
-    //             }
-    //         })
-    //     }
-
-    // })
 
     try {
         const tweets = []
@@ -75,20 +52,8 @@ app.get('/tweets', (req, res) => {
 
 })
 
-
-
-
-// app.post('/tweet/new', jsonParser, (req, res) => {
-
-//     console.log(req.body)
-//     res.status(200).json({
-//         error: false,
-//         msg: 'created!'
-//     })
-
-// })
 app.post('/tweets', jsonParser, (req, res) => {
-    const { content } = req.body
+    const { content } = req.body || ''
 
     const fileName = uuid.v4()
     try {
@@ -121,53 +86,12 @@ app.post('/tweets', jsonParser, (req, res) => {
         })
     }
 
-    // fs.readdir('./data', (err, files) => {
-
-    //     if (err) console.log('error occured')
-
-    //     files.forEach(file => {
-    //         if (file === `${fileName}.json`) {
-    //             res.status(400).json({
-    //                 error: true,
-    //                 msg: 'already exist'
-    //             })
-    //         }
-    //     })
-
-
-    //     const fileContent = [{
-
-    //     }]
-    //     fs.writeFile(`./data/${fileName}.json`, fileContent, encoding, (err) => {
-    //         if (err) throw err;
-
-    //         console.log("The file was succesfully saved!");
-    //     });
-
-
-    // })
 
 
 
 
 })
-// app.post('/tweet/new', jsonParser, (req, res) => {
 
-//     console.log(req.body)
-//     res.status(200).json({
-//         error: false,
-//         msg: 'created!'
-//     })
-
-// })
-
-// app.delete('/tweet/:id/delete', jsonParser, (req, res) => {
-//     console.log(req.params.id)
-//     res.status(200).json({
-//         error: false,
-//         msg: `tweet ${req.params.id} is deleted!`,
-//     })
-// })
 
 
 
