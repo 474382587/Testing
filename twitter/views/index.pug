@@ -1,0 +1,16 @@
+html
+    head
+        style
+            include index.css
+    body
+        div.container
+            each book in data
+                div.card
+                    div.image-container
+                        img(src=book.thumbnailUrl, alt=book.title)
+                    div.content-container
+                        h4= book.title
+                        p.authors= book.authors.join(', ')
+                        p= "ISBN: " + book.isbn
+                        p.status= book.status
+                        p.desc= book.shortDescription

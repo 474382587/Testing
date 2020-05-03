@@ -4,10 +4,11 @@ const fs = require('fs')
 const app = express()
 const port = process.env.PORT || 3000
 const jsonParser = (bodyParser.json())
-
+const axios = require('axios')
 const ENCODING = "utf8";
 
 const uuid = require('uuid')
+app.set('view engine', 'pug')
 
 
 const readFile = (fileName, dir) => {
@@ -22,7 +23,19 @@ const readFile = (fileName, dir) => {
         return null
     }
 }
-
+app.get('/', (req, res) => {
+    
+    axios.get('https://raw.githubusercontent.com/bvaughn/infinite-list-reflow-examples/master/books.json').then(response => {
+        // console.log(123, response[0])
+        // res.json(response.data)
+        console.log(typeof response)
+        console.log(Object.keys(response))
+        
+        res.render('index', { data: response.data })
+    })
+    // res.render('index', { title: "123" })
+    // res.render('index', { title: 'Hey', message: 'Hello there!' })
+})
 app.get('/tweets', (req, res) => {
 
 
@@ -68,7 +81,9 @@ app.post('/tweets', jsonParser, (req, res) => {
             })
         } else {
             try {
-                fs.writeFileSync(`./data/${fileName}.json`, content, ENCODING)
+                fs.writeFileSync(`./data/${fileName}.json`, JSON.stringify({
+                    content: content
+                }), ENCODING)
                 res.status(200).json({
                     error: false,
                     fileName: `${fileName}.json`
@@ -104,7 +119,9 @@ app.put('/tweets/:fileName', jsonParser, (req, res) => {
 
 
     try {
-        fs.writeFileSync(`./data/${fileName}.json`, content, ENCODING)
+        fs.writeFileSync(`./data/${fileName}.json`, JSON.stringify({
+            content: content
+        }), ENCODING)
         res.status(200).json({
             error: false,
             msg: 'content updated!'
