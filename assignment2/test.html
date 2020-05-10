@@ -1,0 +1,14 @@
+<script
+    src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"
+    crossorigin="anonymous"
+></script>
+
+<script>
+    // const client = filestack.init('AP2lqu4mSQwCZfEMEfPG6z');
+    window.addEventListener('DOMContentLoaded', function () {
+        const apikey = 'AP2lqu4mSQwCZfEMEfPG6z';
+        const client = filestack.init(apikey);
+
+        client.picker().open();
+    });
+</script>
