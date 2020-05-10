@@ -45,4 +45,20 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+router.post('/tweets', utils.requireLogin, async (req, res) => {
+    const { content, imageUrl } = req.body
+    
+    const tweet = new Tweets({
+        content,
+        imageUrl,
+        author: req.user
+    })
+    
+    const result = await tweet.save()
+    
+    res.json({
+        result
+    })
+})
+
 module.exports = router;
