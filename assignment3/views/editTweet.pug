@@ -1,0 +1,10 @@
+.tweet
+      - var action = `/tweets/${_id}`
+      form(action=action method="POST")
+        .row
+          textarea.input-tweet(name="content")= _id
+        .row.tweet-actions
+          input.hidden(name="imageUrl")
+          button.btn-update-image.btn-clear
+            i.far.fa-image
+          button.btn-primary.btn-update Update

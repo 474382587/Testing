@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const TweetsSchema = new Schema({
     content: { type: String, required: true },
-    imageUrl: String,
+    imageUrl: Array,
     author: {
         name: { type: String, required: true },
         username: { type: String, required: true },
