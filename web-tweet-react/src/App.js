@@ -16,6 +16,7 @@ import Profile from './pages/Profile'
 import Login from './pages/Login'
 import NavBar from './components/NavBar'
 
+import AuthRoute from './components/AuthRoute';
 
 function App() {
     return (
@@ -25,7 +26,11 @@ function App() {
                 <NavBar></NavBar>
                 <Switch>
                     <Route path="/" exact component={Home}></Route>
-                    <Route path="/login" exact component={Login}></Route>
+                    <Route path="/login" exact component={() => {
+                        return (
+                            <AuthRoute component={Login}></AuthRoute>
+                        )
+                    }}></Route>
                     <Route path="/signup" exact component={Signup}></Route>
                     <Route path="/profile" exact component={Profile}></Route>
                     <Route component={() => <Redirect to="/"></Redirect>}></Route>
