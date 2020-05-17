@@ -6,7 +6,7 @@
           img.avatar-sm.v-top(src=user.avatarUrl alt="avatar")
           textarea.input-tweet(placeholder="What's up?" name="content")
         .row.tweet-actions
-          input.hidden(name="imageUrl")
+          input.hidden(name="imageUrl" value=JSON.stringify([]))
           button.btn-clear
             i.far.fa-image
           button.btn-primary Post

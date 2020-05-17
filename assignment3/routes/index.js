@@ -63,15 +63,13 @@ router.post('/tweets', utils.requireLogin, async (req, res) => {
 
     const tweet = new Tweets({
         content,
-        imageUrl,
+        imageUrl: imageUrl ? JSON.parse(imageUrl) : [],
         author: req.user
     })
-
+    
     const result = await tweet.save()
 
-    res.json({
-        result
-    })
+    res.redirect('/');
 })
 router.delete('/tweets', utils.requireLogin, async (req, res) => {
     const { _id } = req.body
