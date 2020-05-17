@@ -29,20 +29,32 @@
         else 
             img(src=tweet.imageUrl alt="tweet")
       if (user && (tweet.author.username === user.username))
+            - var imgUrl = JSON.stringify(tweet.imageUrl ? tweet.imageUrl : [])
+            - var content = tweet.content
             .edit-tweet-container(style="display: none;")
                 - const _id = tweet._id
                 include editTweet
+style.
+    .edit, .btn-delete {
+        display: none;
+        margin: 0 10px;
+        background-color: #777;
+        color: #fff;
+        border: 1px solid #333;
+        padding: 4px 10px;
+        border-radius: 5px;
+    }
+    .tweet:hover .edit,.tweet:hover .btn-delete {
+        display: inline-block;
+    }
 script(src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js")
 script.
     const urlInput = document.querySelector('input[name="imageUrl"]')
     const options = {
         maxFiles: 5,
         onUploadDone: file => {
-            console.log('file: ', file)
             const urls = file.filesUploaded.map(item => item.url) || []
-            console.log(urls)
             urlInput.value = JSON.stringify(urls)
-            console.log(urlInput.value)
         }
     };
     
@@ -61,34 +73,26 @@ script.
         edit.addEventListener('click', e => {
             if(e.target.innerText === 'Edit') {
                 e.currentTarget.querySelector('.edit-tweet-container').style.display = e.currentTarget.querySelector('.edit-tweet-container').style.display === 'block' ? 'none' : 'block'
-                
                 if(e.currentTarget.querySelector('.edit-tweet-container').style.display === 'block') {
                     const urlInput = e.currentTarget.querySelector('input[name="imageUrl"]')
-                    console.log(urlInput)
                     e.currentTarget.querySelector('.btn-update-image').addEventListener('click', event => {
                         const options = {
                             maxFiles: 5,
                             onUploadDone: file => {
-                                console.log('file: ', file)
                                 const urls = file.filesUploaded.map(item => item.url) || []
-                                console.log(urls)
                                 urlInput.value = JSON.stringify(urls)
-                                console.log(urlInput.value)
                             }
                         };
                         event.preventDefault()
                         client.picker(options).open();
                     })
-                    console.log('e.currentTarget: ', e.currentTarget)
                 }
             } else if (e.target.innerText === 'Delete'){
-                console.log('delete %s', e.target.dataset._id)
                 $.ajax({
                         url: '/tweets',
                         type: 'DELETE',
                         data: { _id: e.target.dataset._id },
                         success(res) {
-                            console.log('res: ', res)
                             if (res.success) location.href='/';
                         }
                 });
