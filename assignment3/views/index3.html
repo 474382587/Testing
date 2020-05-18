@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMHA Donation Form</title>
+</head>
+<body>
+        <header>
+            <div class="image-container">
+                <a href="https://vancouver-fraser.cmha.bc.ca/"><img src="https://dev.josephjin.win/wp-content/uploads/2020/04/cmha_vancouver-fraser-tag_en.png" style="
+    max-width: 240px;
+"></a>
+            </div>
+            <div>
+                <h3>100% Secure</h3>
+            </div>
+        </header>
+    
+    <div class="container">
+        <h1>
+            You are donating <span id="donation-amount"></span> <span id="one-time" class="freq">One Time</span><span id="monthly" class="freq">Monthly</span>
+        </h1>
+        <div class="checkbox-container" style="margin: 0 auto; width: 400px;">
+            <label style=" line-height: 1.5; font-size: 14px; font-weight: bold;"><input type="checkbox" id="processingFee"> I’d like to pay for the 3% processing fee on top of my donation</label>
+        </div>
+        <script type="text/javascript" src="https://www.iatspayments.com/AURA/AURA.aspx?PID=PAA8BDF1A12340243D"></script>        
+    </div>
+    <script defer>
+        var PROCESSING_FEE = 1.03
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log()
+            var interval = setInterval(function() {
+                if(document.getElementById('IATS_ProcessAction_Button') !== null) {
+                    clearInterval(interval)
+                    console.log(document.getElementById('IATS_ProcessAction_Button'))
+                    initAura()
+                }
+            }, 100)
+            
+            var amount = document.getElementById('donation-amount')
+            amount.addEventListener('click', function() {
+                document.querySelector('.IATS_AmountDiv').style.display = 'block'
+                document.querySelector('.checkbox-container').style.display = 'block'
+            })
+            
+        })
+        
+    function initAura() {
+        
+        var params = getQueryParameters()
+        var amount = Number(params.amount) || 60
+        var monthly = params.monthly ? true : false
+        var processingFee = params.processingFee ? true : false
+        console.log(amount)
+        console.log(monthly)
+        updateAmount(amount.toFixed(2))
+        if(monthly) {
+            document.getElementById('monthly').classList.add('active')
+            document.getElementById('IATS_Payment_RecurringPayment').click()
+        } else {
+            document.getElementById('one-time').classList.add('active')
+            document.getElementById('IATS_Payment_SinglePayment').click()
+        }
+        if(processingFee) {
+            document.getElementById('processingFee').checked = true
+        }
+        //IATS_AmountListItem_NewOtherAmount0
+        document.querySelector('#IATS_AmountListItem_NewOtherAmount0').value = amount.toFixed(2)
+        var keyupEvent = new Event('keyup');
+        document.querySelector('#IATS_AmountListItem_NewOtherAmount0').dispatchEvent(keyupEvent)
+        
+        
+        
+        document.querySelector('#IATS_AmountListItem_NewOtherAmount0').addEventListener('change', e => {
+            updateAmount(calulateAmount((e.target.value - 0).toFixed(2), processingFee).toFixed(2))
+        })
+        document.getElementById('processingFee').addEventListener('click', function(e) {
+            processingFee = !processingFee
+            console.log(123, processingFee)
+            
+            updateAmount(calulateAmount((document.querySelector('#IATS_AmountListItem_NewOtherAmount0').value - 0).toFixed(2), processingFee).toFixed(2))
+        })
+    }
+    
+    
+    function calulateAmount(amount, hasFee) {
+        console.log('has: ', hasFee)
+        if(hasFee) {
+            amount = amount * PROCESSING_FEE
+        } else {
+            amount = amount / PROCESSING_FEE
+        }
+        console.log(amount)
+        return amount
+    }
+    
+    function updateAmount(amount) {
+        document.getElementById('donation-amount').innerText = `$${amount}`
+        document.querySelector('#IATS_AmountListItem_NewOtherAmount0').value = amount
+    }
+    
+    // Returns object containing key-value pairs from URL Query Parameters
+    function getQueryParameters() {
+        var query = decodeURI(window.location.search.substring(1));
+        var vars = query.split("&");
+        var params = {};
+    
+        for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        params[pair[0]] = pair[1];
+        }
+        return params;
+    }
+        
+        
+    </script>
+    <style>
+        .checkbox-container {
+            display: none;
+        }
+        .freq {
+            display: none;
+        }
+        .freq.active {
+            display: inline;
+        }
+        .IATS_AmountItemDiv > table {
+            display: none;
+        }
+        #IATS_Amount_Other0 {
+            display: none;
+        }
+        #IATS_AmountName_Order_Other0 {
+            padding-left: 0;
+            margin-left: 0;
+        }
+        .IATS_AmountSpan {
+            padding-left: 0 !important;
+        }
+        #IATS_PaymentBoxDiv {
+            margin: 0 auto;
+        }
+        #donation-amount {
+            border-bottom: 1px solid #00b1b0;
+            color: #00b1b0;
+            cursor: pointer;
+        }
+        div.IATS_AmountDiv {
+            display: none;
+        }
+        span.IATS_AmountSectionTitle {
+            display: none;
+        }
+        #IATS_Payment_PaymentFrequencyDiv, #IATS_Payment_AccountTypeDiv, #IATS_ReoccurringDiv_ScheduleType {
+            display: none !important;
+        }
+        body {
+            background: url('https://dev.josephjin.win/wp-content/uploads/2020/04/bgtax.png');
+        }
+        header {
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 6%;
+            align-items: center;
+            box-sizing: border-box;
+            margin: 0 auto;
+            border-bottom: 1px solid #e3e3e3;
+        }
+        .container {
+            padding: 30px 0;
+            max-width: 1080px;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+        }
+        .IATS_ContentDiv .IATS_PaymentItemDiv input:not([type=checkbox]):not([type=radio]), #IATS_AmountListItem_NewOtherAmount0 {
+            border-radius: 2px;
+            background-color: #ffffff;
+            border: solid 1px #d1d3d4;
+            color: #4d4d4d;
+            font-size: 22px;
+            margin: 0;
+            padding: 0 10px;
+            height: 44px;
+            width: 100%;
+        }
+        .IATS_ContentDiv .IATS_PaymentItemDiv label, .IATS_ContentDiv .IATS_RadioAmtLabel {
+            align-self: center;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 150%;
+            margin: 0;
+            padding: 0 0 0 0.3em;
+        }
+        select#IATS_PaymentItemInput_Country {
+            width: 100%;
+            box-sizing: content-box;
+            border: solid 1px #d1d3d4;
+            margin: 0;
+            font-size: 18px;
+        }
+        span.IATS_PaymentSectionNote {
+            display: none;
+        }
+        span.IATS_PaymentSectionTitle {
+            display: none;
+        }
+        select {
+            width: 24%;
+            border-radius: 2px;
+            background-color: #ffffff;
+            border: solid 1px #d1d3d4;
+            color: #4d4d4d;
+            font-size: 22px;
+            margin: 0;
+            padding: 0 10px;
+            height: 44px;
+            margin: 0 4px;
+        }
+        #IATS_PaymentSectionDiv > div {
+            margin-bottom: 10px;
+        }
+        #IATS_ProcessAction_Button {
+            background-color: #00b1b0;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 0.25px;
+            margin: 0 auto 30px auto;
+            padding: 20px 0;
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</body>
+</html>
+

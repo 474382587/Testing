@@ -1,0 +1,335 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CMHA Vancouver</title>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <div class="image-container">
+                    <img
+                        src="https://vancouver-fraser.cmha.bc.ca/wp-content/uploads/2020/05/cmha_vancouver-fraser-tag_en-1.png"
+                    />
+                </div>
+                <div>
+                    <h3>100% Secure</h3>
+                </div>
+            </header>
+            <div class="form-container">
+                <form>
+                    <h2>
+                        Creating a brighter future for those living with mental
+                        health challenges
+                    </h2>
+                    <p class="intro"></p>
+                    <div class="options">
+                        <div class="option active" data-amount="60">
+                            60
+                        </div>
+                        <div class="option" data-amount="110">
+                            110
+                        </div>
+                        <div class="option" data-amount="160">
+                            160
+                        </div>
+                        <div class="option" data-amount="200">
+                            200
+                        </div>
+                    </div>
+                    <div class="input">
+                        <p>
+                            $
+                        </p>
+                        <input
+                            class="money"
+                            value="60.00"
+                            type="text"
+                            placeholder=""
+                        />
+                        <p>
+                            CAD
+                        </p>
+                    </div>
+                    <div class="button-groups">
+                        <div class="donate-btn one-time">
+                            Give $<span class="amount">60</span>
+                        </div>
+                        <div class="donate-btn monthly">
+                            Give $<span class="amount">60</span> Monthly
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label
+                            ><input type="checkbox" id="processingFee" /> I’d
+                            like to pay for the 3% processing fee on top of my
+                            donation</label
+                        >
+                    </div>
+                </form>
+            </div>
+            <div class="links">
+                <div class="link">
+                    <a href="/iats-form">Privacy</a>
+                </div>
+                <div class="link">
+                    <a href="#">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                © 2020 CMHA British Columbia - Mentally Healthy People in a
+                Healthy Society
+            </p>
+            <p>Charitable Registration No. 88844 1995 RR 0001</p>
+        </footer>
+        <script>
+            const PROCESSING_FEE = 1.03;
+            var aggreeToPayProcessingFee = false;
+            document.getElementById('processingFee').checked = false;
+            document.addEventListener('DOMContentLoaded', () => {
+                const options = Array.from(
+                    document.querySelectorAll('.option')
+                );
+                const amountDisplays = Array.from(
+                    document.querySelectorAll('.amount')
+                );
+                const input = document.querySelector('input.money');
+                let displayValue = 60.0;
+
+                input.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    if (isNaN(+value)) {
+                        console.log('NaN');
+                    } else {
+                        displayValue = (+value).toFixed(2);
+                        updateValue(amountDisplays, displayValue);
+                    }
+                });
+
+                options.forEach((option) => {
+                    option.addEventListener('click', (e) => {
+                        const value = e.target.dataset.amount;
+                        displayValue = value;
+                        options.forEach((a) => a.classList.remove('active'));
+                        e.target.classList.add('active');
+                        updateValue(amountDisplays, displayValue);
+                        input.value = displayValue + '.00';
+                    });
+                    option.addEventListener('mouseenter', (e) => {
+                        const value = e.currentTarget.dataset.amount;
+                        updateValue(amountDisplays, value);
+                    });
+                    option.addEventListener('mouseleave', (e) => {
+                        updateValue(amountDisplays, displayValue);
+                    });
+                });
+
+                document
+                    .getElementById('processingFee')
+                    .addEventListener('click', (e) => {
+                        aggreeToPayProcessingFee = !aggreeToPayProcessingFee;
+                        updateValue(amountDisplays, displayValue);
+                    });
+                document
+                    .querySelector('.one-time')
+                    .addEventListener('click', (e) => {
+                        const url = `/donation-payment?caid=7016g000000I3TkAAK&amount=${
+                            aggreeToPayProcessingFee
+                                ? (displayValue * PROCESSING_FEE).toFixed(2)
+                                : displayValue
+                        }${
+                            aggreeToPayProcessingFee
+                                ? '&processingFee=true'
+                                : ''
+                        }`;
+                        window.location.href = url;
+                    });
+                document
+                    .querySelector('.monthly')
+                    .addEventListener('click', (e) => {
+                        const url = `/donation-payment?caid=7016g000000I3TpAAK&amount=${
+                            aggreeToPayProcessingFee
+                                ? (displayValue * PROCESSING_FEE).toFixed(2)
+                                : displayValue
+                        }&monthly=true${
+                            aggreeToPayProcessingFee
+                                ? '&processingFee=true'
+                                : ''
+                        }`;
+                        window.location.href = url;
+                    });
+            });
+
+            function updateValue(elements, value) {
+                elements.forEach((display) => {
+                    console.log(123);
+                    display.innerText = aggreeToPayProcessingFee
+                        ? (value * PROCESSING_FEE).toFixed(2)
+                        : value;
+                });
+            }
+        </script>
+    </body>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+        body {
+            background: url('https://vancouver-fraser.cmha.bc.ca/wp-content/uploads/2020/05/bgtax.png');
+        }
+        img {
+            width: 100%;
+        }
+        .container {
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 3px #666;
+        }
+        .image-container {
+            width: 200px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 6%;
+            align-items: center;
+        }
+
+        .form-container {
+            background-image: url('https://vancouver-fraser.cmha.bc.ca/wp-content/uploads/2020/05/Donation-Page-BG-scaled.jpeg');
+            padding: 150px 20px;
+            background-size: cover;
+            background-position: center;
+        }
+        form {
+            margin: 0 0 0 7%;
+            width: 500px;
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 0 15px 0 #666;
+        }
+        .options {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .option {
+            font-size: 32px;
+            padding: 8px 0px;
+            text-align: center;
+            border: 1px solid #e3e3e3;
+            width: 23%;
+            border-radius: 10px;
+        }
+        .option:hover {
+            cursor: pointer;
+            background-color: #00b1b0;
+            color: #fff;
+        }
+        .option.active {
+            background-color: #00b1b0;
+            color: #fff;
+        }
+        .button-groups {
+            display: flex;
+            justify-content: space-between;
+        }
+        .donate-btn {
+            flex: 1;
+            margin: 0 5px;
+            font-size: 18px;
+            padding: 14px 0;
+            border-radius: 8px;
+            background-color: #00b1b0;
+            text-align: center;
+            color: #fff;
+            font-weight: bolder;
+            cursor: pointer;
+        }
+        .input {
+            border: 1px solid #e3e3e3;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        .input > input {
+            flex: 1;
+            border: none;
+            font-size: 36px;
+            max-width: 300px;
+            outline: none;
+        }
+        .input > p {
+            padding: 2px 10px;
+            font-size: 36px;
+        }
+        .links {
+            margin-top: 60px;
+            padding: 20px;
+            padding-bottom: 80px;
+            display: flex;
+            justify-content: center;
+        }
+        .link > a {
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: 1px solid #00b1b0;
+            color: #00b1b0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        @media screen and (max-width: 550px) {
+            .form-container {
+                padding: 30px 10px;
+                /* box-sizing: border-box; */
+            }
+            form {
+                width: auto;
+                padding: 20px 15px;
+                margin: 0 0 0 0;
+            }
+            .option {
+                font-weight: 800;
+                font-size: 20px;
+                padding: 8px 0px;
+                text-align: center;
+                border: 1px solid #e3e3e3;
+                width: 23%;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .input > p {
+                font-size: 20px;
+            }
+            .input > input {
+                flex: 1;
+                font-size: 20px;
+                max-width: 160px;
+            }
+            .button-groups {
+                flex-direction: column;
+            }
+            .button-groups > * {
+                margin-top: 10px;
+            }
+        }
+        footer {
+            text-align: center;
+            padding: 52px;
+            background-color: #00b1b0;
+            margin-top: 0;
+            color: #fff;
+        }
+    </style>
+</html>
