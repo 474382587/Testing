@@ -18,25 +18,31 @@ import NavBar from './components/NavBar'
 
 import AuthRoute from './components/AuthRoute';
 
+import { Provider } from 'react-redux';
+import configStore from './store'
+
+
 function App() {
     return (
-        <div className="App">
+        <Provider store={configStore()}>
+            <div className="App">
 
-            <Router>
-                <NavBar></NavBar>
-                <Switch>
-                    <Route path="/" exact component={Home}></Route>
-                    <Route path="/login" exact component={() => {
-                        return (
-                            <AuthRoute component={Login}></AuthRoute>
-                        )
-                    }}></Route>
-                    <Route path="/signup" exact component={Signup}></Route>
-                    <Route path="/profile" exact component={Profile}></Route>
-                    <Route component={() => <Redirect to="/"></Redirect>}></Route>
-                </Switch>
-            </Router>
-        </div>
+                <Router>
+                    <NavBar></NavBar>
+                    <Switch>
+                        <Route path="/" exact component={Home}></Route>
+                        <Route path="/login" exact component={() => {
+                            return (
+                                <AuthRoute component={Login}></AuthRoute>
+                            )
+                        }}></Route>
+                        <Route path="/signup" exact component={Signup}></Route>
+                        <Route path="/profile" exact component={Profile}></Route>
+                        <Route component={() => <Redirect to="/"></Redirect>}></Route>
+                    </Switch>
+                </Router>
+            </div>
+        </Provider>
     );
 }
 

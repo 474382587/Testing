@@ -1,7 +1,12 @@
 import React from 'react'
 import TweetList from '../components/TweetList'
 import LoginForm from '../components/LoginForm'
+import { connect } from 'react-redux'
+import { login } from '../actions/auth'
 const baseUrl = 'https://tweet-api.webdxd.com/'
+
+
+// import 
 
 class Login extends React.Component {
     constructor() {
@@ -21,7 +26,8 @@ class Login extends React.Component {
         this.setState({
             tweets
         })
-        console.log(this.state)
+        console.log(this.props)
+        this.props.onLogin()
     }
     render() {
         return (
@@ -35,4 +41,19 @@ class Login extends React.Component {
     }
 }
 
-export default Login
+const mapStateToProps = state => {
+    return {
+        auth: state.auth
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogin: () => {
+            console.log("login@@@@@@")
+            console.log(login())
+            dispatch(login())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

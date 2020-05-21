@@ -17,9 +17,9 @@ class AuthRoute extends React.Component {
     }
     
     render() {
-        console.log(111)
+        // console.log(111)
         const WrappedComponent = this.props.component
-        console.log(WrappedComponent)
+        // console.log(WrappedComponent)
         return <WrappedComponent />
     }
 }
