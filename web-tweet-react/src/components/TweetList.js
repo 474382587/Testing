@@ -16,7 +16,7 @@ class TweetList extends React.Component {
         if (this.props.tweets && this.props.tweets.length) {
             return this.props.tweets.map(tweet => <Tweet tweet={tweet} key={tweet._id}></Tweet>)
         }
-        return <h1>this is a list</h1>
+        return <h1>this is an empty list</h1>
     }
 
 }
