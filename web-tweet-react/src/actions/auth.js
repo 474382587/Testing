@@ -1,27 +1,28 @@
 import {
-    LOGIN,
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
     LOGOUT
 } from './action_const'
 
-const url = 'http://localhost:3001/login'
-const formData = new FormData();
-formData.append('username', '123');
-formData.append('password', '123');
-export const login = (params) => {
-    // fetch(url, {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //         username: '123',
-    //         password: '123'
-    //     })
-    // }).then(res => {
-    //     console.log(res)
-    // }).catch(err => {
-    //     console.log(err)
-    // })
-    return {
-        type: LOGIN,
-        payload: 'this is a test'
+import axios from 'axios'
+
+const url = 'https://tweet-api.webdxd.com'
+
+
+
+export const login = (params) => async dispatch => {
+    try {
+        const res = await axios.post(`${url}/auth/login`, params)
+        window.sessionStorage.setItem('web-tweet', res.data.token)
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: 'this is a test'
+        })
+    } catch (error) {
+        return {
+            type: LOGIN_FAIL,
+            payload: 'this is a test'
+        }
     }
 }
 

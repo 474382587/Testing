@@ -1,5 +1,8 @@
-// import LOGIN from '../actions/actions'
-
+import {
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGOUT
+} from '../actions/action_const'
 const initState = {
     authorized: false
 }
@@ -8,7 +11,7 @@ const initState = {
 function auth(state = initState, action) {
     const { type, payload } = action
     switch (type) {
-        case 'LOGIN':
+        case LOGIN_SUCCESS:
             console.log('Reducers!!!!!')
             return {
                 ...state,

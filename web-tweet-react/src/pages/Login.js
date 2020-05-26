@@ -3,6 +3,7 @@ import TweetList from '../components/TweetList'
 import LoginForm from '../components/LoginForm'
 import { connect } from 'react-redux'
 import { login } from '../actions/auth'
+import { Redirect } from 'react-router-dom'
 const baseUrl = 'https://tweet-api.webdxd.com/'
 
 
@@ -27,10 +28,9 @@ class Login extends React.Component {
             tweets
         })
         console.log(this.props)
-        this.props.onLogin()
     }
     render() {
-        return (
+        return this.props.authorized ? (<Redirect to='/' />) : (
             <div className="container" >
                 <LoginForm></LoginForm>
                 <div className="col-3of5 bg-white">
@@ -41,19 +41,9 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        auth: state.auth
-    }
-}
-const mapDispatchToProps = dispatch => {
-    return {
-        onLogin: () => {
-            console.log("login@@@@@@")
-            console.log(login())
-            dispatch(login())
-        }
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+
+
+export default connect(state => ({
+    authorized: state.auth.authorized
+}))(Login)

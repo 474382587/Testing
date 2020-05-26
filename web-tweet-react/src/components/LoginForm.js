@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router-dom'
-class SignupForm extends Component {
+import { connect } from 'react-redux'
+import { login } from '../actions/auth'
+class LoginForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -13,9 +14,9 @@ class SignupForm extends Component {
         e.preventDefault()
         console.log(this.state)
         if (this.validate()) {
-            window.localStorage.setItem('login', JSON.stringify(true))
+            // window.localStorage.setItem('login', JSON.stringify(true))
+            this.props.login(this.state)
         }
-        this.props.history.push('/')
     }
     validate() {
         return true
@@ -42,4 +43,6 @@ class SignupForm extends Component {
     }
 }
 
-export default withRouter(SignupForm)
+export default connect(state => ({}), {
+    login
+})(LoginForm)
