@@ -24,9 +24,9 @@ class Login extends React.Component {
 
     async componentDidMount() {
         const tweets = (await this.loadAllTweets()).tweets || []
-        this.setState({
-            tweets
-        })
+        // this.setState({
+        //     tweets
+        // })
         console.log(this.props)
     }
     render() {

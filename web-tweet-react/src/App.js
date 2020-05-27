@@ -31,9 +31,11 @@ function App() {
                     <NavBar></NavBar>
                     <Switch>
                         <Route path="/" exact component={Home}></Route>
-                        <Route path="/login" exact component={() => <AuthRoute component={Login}></AuthRoute>}></Route>
+                        <Route path="/login" exact component={Login} />
                         <Route path="/signup" exact component={Signup}></Route>
-                        <Route path="/profile" exact component={Profile}></Route>
+                        <Route path="/profile" exact component={() => {
+                            return <AuthRoute component={Profile} />
+                        }}></Route>
                         <Route component={() => <Redirect to="/"></Redirect>}></Route>
                     </Switch>
                 </Router>

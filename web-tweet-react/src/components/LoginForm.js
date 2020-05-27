@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { login } from '../actions/auth'
 class LoginForm extends Component {
     constructor(props) {
         super(props)
@@ -12,9 +10,7 @@ class LoginForm extends Component {
     }
     handleFormSubmit = e => {
         e.preventDefault()
-        console.log(this.state)
         if (this.validate()) {
-            // window.localStorage.setItem('login', JSON.stringify(true))
             this.props.login(this.state)
         }
     }
@@ -43,6 +39,4 @@ class LoginForm extends Component {
     }
 }
 
-export default connect(state => ({}), {
-    login
-})(LoginForm)
+export default LoginForm

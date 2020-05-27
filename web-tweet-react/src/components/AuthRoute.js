@@ -1,27 +1,21 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 class AuthRoute extends React.Component {
-        
+
     constructor(props) {
         super(props)
     }
-    
-    componentDidMount() {
-        
-        // if(!this.props.isAuthorized) {
-        //     this.props.history.push('/login')                
-        // } else {
-        //     console.log('I am login user')
-        // }
-        
-    }
-    
+
     render() {
         // console.log(111)
         const WrappedComponent = this.props.component
         // console.log(WrappedComponent)
-        return <WrappedComponent />
+        return this.props.authorized ? <WrappedComponent /> : <Redirect to='/' />
     }
 }
 
-export default AuthRoute
+export default connect(state => ({
+    authorized: state.auth.authorized
+}))(AuthRoute)

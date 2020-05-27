@@ -1,9 +1,9 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import {
     Link,
 } from 'react-router-dom'
-const NavBar = () => {
+const NavBar = (props) => {
     return (
         <nav className="nav-bar">
             <div className="container nav-container">
@@ -20,13 +20,19 @@ const NavBar = () => {
                     </li>
                 </ul>
                 <div>
-                    <Link to='/profile'>
+                
+                    {   
+                        props.authorized ? (<Link to='/profile'>
                         <img className="avatar-sm" src="./sample-avatar.png" alt="avatar" />
-                    </Link>
+                    </Link>) : ''
+                    }
+
                 </div>
             </div>
         </nav>
     )
 }
 
-export default NavBar
+export default connect(state => ({
+    authorized: state.auth.authorized
+}))(NavBar)

@@ -3,7 +3,9 @@ import TweetList from '../components/TweetList'
 import UserCard from '../components/UserCard'
 import TweetForm from '../components/TweetForm'
 import { Router } from 'react-router-dom'
-
+import { connect } from 'react-redux'
+import LoginForm from '../components/LoginForm'
+import { login } from '../actions/auth'
 const baseUrl = 'https://tweet-api.webdxd.com/'
 
 class Home extends React.Component {
@@ -22,16 +24,10 @@ class Home extends React.Component {
 
 
     async componentDidMount() {
-        if (!JSON.parse(window.localStorage.getItem('login'))) {
-            this.props.history.push('/login')
-        } else {
-            const tweets = (await this.loadAllTweets()).tweets || []
-            this.setState({
-                tweets
-            })
-        }
-
-
+        const tweets = (await this.loadAllTweets()).tweets || []
+        this.setState({
+            tweets
+        })
     }
 
 
@@ -39,7 +35,9 @@ class Home extends React.Component {
         return (
             <div>
                 <div className="container">
-                    <UserCard></UserCard>
+                    {
+                        !this.props.authorized ? <LoginForm login={this.props.login} /> : <UserCard profile={this.props.profile} />
+                    }
                     <div className="col-3of5 bg-white">
                         <TweetForm></TweetForm>
                         <TweetList tweets={this.state.tweets}></TweetList>
@@ -50,4 +48,9 @@ class Home extends React.Component {
     }
 }
 
-export default Home
+export default connect(state => ({
+    authorized: state.auth.authorized,
+    profile: state.auth.profile
+}), {
+    login
+})(Home)
