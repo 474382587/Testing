@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactFilestack from 'filestack-react';
 
 class EditProfile extends React.Component {
 
@@ -28,11 +29,19 @@ class EditProfile extends React.Component {
                     <input name="location" placeholder="location" onChange={this.handleInputChange} />
                 </div>
                 <div>
-                    <textarea name="bio" name="bio" placeholder="bio" onChange={this.handleInputChange} ></textarea> 
+                    <textarea name="bio" name="bio" placeholder="bio" onChange={this.handleInputChange} ></textarea>
                 </div>
-                <div>
+                <div style={{
+                    display: 'none'
+                }}>
                     <input name="avatarUrl" onChange={this.handleInputChange} />
                 </div>
+                <ReactFilestack
+                    apikey={'AP2lqu4mSQwCZfEMEfPG6z'}
+                    onSuccess={(res) => this.setState({
+                        avatarUrl: res.filesUploaded[0].url
+                    })}
+                />
                 <button onClick={() => {
                     this.props.toggleEdit()
                     this.props.handleSubmit(this.state)
