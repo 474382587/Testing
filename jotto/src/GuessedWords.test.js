@@ -78,6 +78,7 @@ describe('language Picker', () => {
 
     expect(component.text()).toBe('Try to guess the secret word!');
   });
+
   test('renders guess instructions string in emoji by default', () => {
     const mockUseContext = jest.fn().mockReturnValue('emoji');
     React.useContext = mockUseContext;
