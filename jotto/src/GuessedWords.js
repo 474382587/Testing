@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import strings from './helpers/strings'
-import languageContext from './contexts/languageContext'
+import strings from './helpers/strings';
+import languageContext from './contexts/languageContext';
 
 const GuessedWords = (props) => {
-  const language = React.useContext(languageContext)
-  
+  const language = React.useContext(languageContext);
+
   let contents = '';
   if (props.guessedWords.length === 0) {
     contents = (
       <span data-test="guess-instructions">
-        {
-          strings.getStringByLanguage(language, 'guessPrompt')
-        }
+        {strings.getStringByLanguage(language, 'guessPrompt')}
       </span>
     );
   } else {
