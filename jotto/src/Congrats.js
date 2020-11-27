@@ -5,7 +5,9 @@ const Congrats = ({ success }) => {
   return (
     <div data-test="component-congrats">
       {success ? (
-        <span data-test="congrats-message">Congrats</span>
+        <span data-test="congrats-message" className="alert alert-success">
+          Congrats
+        </span>
       ) : (
         <span></span>
       )}
@@ -13,6 +15,8 @@ const Congrats = ({ success }) => {
   );
 };
 
-Congrats.propTypes = {}
+Congrats.propTypes = {
+  success: PropTypes.bool.isRequired,
+};
 
 export default Congrats;
