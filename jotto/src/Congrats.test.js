@@ -1,16 +1,9 @@
 import React from 'react';
 
-import Enzyme, { shallow } from 'enzyme';
-import EnzymeAdaper from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 
 import Congrats from './Congrats';
 import { findByTestAttr, checkProps } from '../test/testUtils';
-import { checkPropTypes } from 'prop-types';
-
-Enzyme.configure({
-  adapter: new EnzymeAdaper(),
-});
-// yarn add --save-dev enzyme jest-enzyme enzyme-adapter-react-16
 
 const defaultProps = {
   success: false,
