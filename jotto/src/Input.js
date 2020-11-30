@@ -59,26 +59,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 const Input = ({ secretWord }) => {
+  const [currentGuess, setCurrentGuess] = React.useState('');
+
   return (
     <div data-test="component-input">
       <form className="form-inline">
         <input
+          type="text"
           className="mb-2 mx-sm-3"
           data-test="input-box"
           placeholder="enter guess"
-          value={'this.state.currentGuess'}
+          value={currentGuess}
           onChange={(e) => {
-            // this.setState({
-            //   ...this.state,
-            //   currentGuess: e.target.value,
-            // });
+            setCurrentGuess(e.target.value);
           }}
         />
         <button
           data-test="submit-button"
           type="submit"
           className="btn btn-primary mb-2"
-          onClick={() => {}}
+          onClick={(e) => {
+            e.preventDefault()
+            setCurrentGuess('')
+          }}
         >
           Submit
         </button>

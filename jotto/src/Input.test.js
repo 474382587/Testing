@@ -114,3 +114,32 @@ test('Input renders without error', () => {
 test('does not throw warning with expected props', () => {
   checkProps(Input, { secretWord: 'party' });
 });
+
+describe('state controlled input field', () => {
+  let wrapper;
+  let mockSetCurrentGuess = jest.fn();
+  beforeEach(() => {
+    mockSetCurrentGuess.mockClear();
+    React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
+    wrapper = setup();
+  });
+  test('state updates  with value of input box upon change', () => {
+    const mockEvent = {
+      target: { value: 'train' },
+    };
+    const inputBox = findByTestAttr(wrapper, 'input-box');
+    inputBox.simulate('change', mockEvent);
+
+    expect(mockSetCurrentGuess).toHaveBeenCalledWith('train');
+  });
+  test('clear value of input box upon submit', () => {
+    const mockEvent = {
+      target: { value: 'train' },
+      preventDefault: () => {},
+    };
+    const submitButton = findByTestAttr(wrapper, 'submit-button');
+    submitButton.simulate('click', mockEvent);
+
+    expect(mockSetCurrentGuess).toHaveBeenCalledWith('');
+  });
+});
