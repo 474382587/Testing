@@ -37,8 +37,49 @@
 //   getSecretWord,
 // })(UnconnectedApp);
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import hookActions from './actions/hookActions';
+import Input from './Input';
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'setSecretWord':
+      return {
+        ...state,
+        secretWord: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 const App = () => {
-  return <div data-test="component-app"></div>;
+  const [state, dispatch] = React.useReducer(reducer, {
+    secretWord: null,
+  });
+
+  const setSecretWord = (secretWord) => {
+    dispatch({
+      type: 'setSecretWord',
+      payload: secretWord,
+    });
+  };
+
+  useEffect(() => {
+    hookActions.getSecretWord(setSecretWord);
+  }, []);
+
+  if(!state.secretWord) {
+    return <div className="container" data-test="component-spinner">
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading</span>
+      </div>
+      <p>Loading secret word</p>
+    </div>
+  }
+  return (
+    <div data-test="component-app">
+      <Input secretWord={state.secretWord || ''}/>
+    </div>
+  );
 };
 export default App;
