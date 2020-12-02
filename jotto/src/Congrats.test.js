@@ -1,18 +1,35 @@
 import React from 'react';
 
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import Congrats from './Congrats';
 import { findByTestAttr, checkProps } from '../test/testUtils';
+import languageContext from './contexts/languageContext';
 
-const defaultProps = {
-  success: false,
+const setup = ({
+  success = false, language = 'en'
+} = {}) => {
+  return mount(
+  <languageContext.Provider value={language}>
+    <Congrats success={success}/>
+  </languageContext.Provider>
+  )
 };
 
-const setup = (props = {}) => {
-  const setupProps = { ...defaultProps, ...props };
-  return shallow(<Congrats {...setupProps} />);
-};
+describe('languagePicker', () => {
+  
+  test('correctly renders congrats string in english by default', () => {
+    const wrapper = setup({success: true})
+    
+    expect(wrapper.text()).toBe('Congratulations! You guessed the word!')
+  })
+  
+  test('correctly renders congrats in emoji', () => {
+    const wrapper = setup({success: true, language: 'emoji'})
+    
+    expect(wrapper.text()).toBe('🎯🎉')
+  })
+})
 
 test('renders without error', () => {
   const wrapper = setup();
@@ -27,7 +44,7 @@ test('renders no text when success prop is false', () => {
 test('renders congrats message when success prop is true', () => {
   const wrapper = setup({ success: true });
   const component = findByTestAttr(wrapper, 'congrats-message');
-  expect(component.text()).toBe('Congrats');
+  expect(component.text()).toBe('Congratulations! You guessed the word!');
 });
 
 test('does not throw warning with expected props', () => {
