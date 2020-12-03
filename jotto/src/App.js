@@ -41,9 +41,12 @@ import React, { useEffect } from 'react';
 import hookActions from './actions/hookActions';
 import Input from './Input';
 
-import LanguageContext from './contexts/languageContext';
+import successContext from './contexts/successContext';
 import LanguagePicker from './LanguagePicker';
 import languageContext from './contexts/languageContext';
+import Congrats from './Congrats'
+import GuessedWords from './GuessedWords'
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -99,7 +102,10 @@ const App = () => {
     <div data-test="component-app">
       <languageContext.Provider value={state.language}>
         <LanguagePicker setLanguage={setLanguage} />
-        <Input secretWord={state.secretWord || ''} />
+        <successContext.SuccessProvider>
+          <Congrats />
+          <Input secretWord={state.secretWord || ''} />
+        </successContext.SuccessProvider>
       </languageContext.Provider>
     </div>
   );
