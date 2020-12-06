@@ -22,9 +22,7 @@ const Congrats = () => {
       </div>
     );
   } else {
-    return (
-      <div data-test="component-congrats" />
-    );
+    return <div data-test="component-congrats" />;
   }
 };
 
