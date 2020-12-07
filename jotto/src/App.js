@@ -44,9 +44,8 @@ import Input from './Input';
 import successContext from './contexts/successContext';
 import LanguagePicker from './LanguagePicker';
 import languageContext from './contexts/languageContext';
-import Congrats from './Congrats'
-import GuessedWords from './GuessedWords'
-
+import Congrats from './Congrats';
+import GuessedWords from './GuessedWords';
 
 const reducer = (state, action) => {
   switch (action.type) {
